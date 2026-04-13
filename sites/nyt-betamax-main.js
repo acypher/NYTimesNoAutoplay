@@ -173,17 +173,24 @@
   var __nunusOrigPlay = HTMLVideoElement.prototype.play;
   HTMLVideoElement.prototype.play = function nunusEarlyPlayGuard() {
     try {
+      var inBmx = false;
       var root = this.getRootNode();
       while (root instanceof ShadowRoot) {
         if (root.host && root.host.tagName === 'NYT-BETAMAX') {
-          if (this.dataset.nunusBetamaxPlayAllowed !== '1') {
-            return Promise.reject(
-              new DOMException('Nunus blocked autoplay', 'NotAllowedError')
-            );
-          }
+          inBmx = true;
           break;
         }
         root = root.host.getRootNode();
+      }
+      if (!inBmx) {
+        try {
+          inBmx = !!(this.closest && this.closest('nyt-betamax'));
+        } catch (_) {}
+      }
+      if (inBmx && this.dataset.nunusBetamaxPlayAllowed !== '1') {
+        return Promise.reject(
+          new DOMException('Nunus blocked autoplay', 'NotAllowedError')
+        );
       }
     } catch (_) {}
     return __nunusOrigPlay.apply(this, arguments);
@@ -276,6 +283,10 @@
       if (host && host.tagName === 'NYT-BETAMAX') return host;
       root = host.getRootNode();
     }
+    try {
+      const light = el.closest && el.closest('nyt-betamax');
+      if (light) return light;
+    } catch (_) {}
     return null;
   }
 
@@ -515,6 +526,33 @@
     return sr.querySelector('video[data-testid="betamax-video"]') || sr.querySelector('video');
   }
 
+  /** Slotted / light-DOM players: video is under nyt-betamax but not inside its shadow tree. */
+  function findBetamaxVideoInLightDom(host) {
+    if (!host || !host.querySelectorAll) return null;
+    let any = null;
+    try {
+      host.querySelectorAll('video').forEach(v => {
+        try {
+          if (v.closest('nyt-betamax') !== host) return;
+        } catch (_) {
+          return;
+        }
+        if (v.getAttribute('data-testid') === 'betamax-video') any = v;
+        else if (!any) any = v;
+      });
+    } catch (_) {}
+    return any;
+  }
+
+  function findBetamaxVideoForHost(host) {
+    const sr = host.shadowRoot;
+    if (sr) {
+      const inSr = findBetamaxVideo(sr);
+      if (inSr) return inSr;
+    }
+    return findBetamaxVideoInLightDom(host);
+  }
+
   function applyBetamaxVideoBlock(host, vid) {
     stripBetamaxAutoplay(vid);
     try {
@@ -524,28 +562,44 @@
     wireBetamaxHostUnhideObserver(host);
   }
 
-  function wireBetamaxShadowRootObserver(host, sr) {
+  function wireBetamaxHostVideoObserver(host, sr) {
     if (host.dataset.nunusBetamaxSrMo === '1') return;
     host.dataset.nunusBetamaxSrMo = '1';
-    const mo = new MutationObserver(() => {
-      const vid = findBetamaxVideo(sr);
+    const mos = [];
+    const disconnect = () => {
+      for (let i = 0; i < mos.length; i++) {
+        try {
+          mos[i].disconnect();
+        } catch (_) {}
+      }
+    };
+    const onMut = () => {
+      const vid = findBetamaxVideoForHost(host);
       if (vid) {
-        mo.disconnect();
+        disconnect();
         applyBetamaxVideoBlock(host, vid);
       }
-    });
-    mo.observe(sr, { childList: true, subtree: true });
+    };
+    if (sr) {
+      const mo = new MutationObserver(onMut);
+      mo.observe(sr, { childList: true, subtree: true });
+      mos.push(mo);
+    }
+    const moLight = new MutationObserver(onMut);
+    try {
+      moLight.observe(host, { childList: true, subtree: true });
+      mos.push(moLight);
+    } catch (_) {}
   }
 
   function scanHost(host) {
     wireBetamaxHostUnhideObserver(host);
     const sr = host.shadowRoot;
-    if (!sr) return;
-    const vid = findBetamaxVideo(sr);
+    const vid = findBetamaxVideoForHost(host);
     if (vid) {
       applyBetamaxVideoBlock(host, vid);
     } else {
-      wireBetamaxShadowRootObserver(host, sr);
+      wireBetamaxHostVideoObserver(host, sr);
     }
   }
 
@@ -629,9 +683,7 @@
     const path = e.composedPath();
     document.querySelectorAll('nyt-betamax').forEach(host => {
       if (!path.includes(host)) return;
-      const sr = host.shadowRoot;
-      if (!sr) return;
-      const vid = findBetamaxVideo(sr);
+      const vid = findBetamaxVideoForHost(host);
       if (vid) {
         vid.dataset.nunusBetamaxPlayAllowed = '1';
         wireBetamaxHostUnhideObserver(host);

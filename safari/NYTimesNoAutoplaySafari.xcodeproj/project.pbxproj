@@ -1,0 +1,409 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4832C9D51D8B983A98BBEFC4 /* NYTimesNoAutoplayHostApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E00F80FEE8078A7A81B7C6 /* NYTimesNoAutoplayHostApp.swift */; };
+		879A141526AECB22A1441CA7 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF078481B9B44A156F8A6D99 /* SafariWebExtensionHandler.swift */; };
+		FFCCF3AFD281E1419406EE2D /* NYTimesNoAutoplayExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 640DDD05409DAC8EB9C53096 /* NYTimesNoAutoplayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D4951FB208D8AEB29332BD92 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A45E38BA573B8A2964D52018 /* AppIcon.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B516799D4551D6B734651523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FBD244F05B1ED7416B6D41E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 032D4929E028623728830A90;
+			remoteInfo = NYTimesNoAutoplayExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F5D3DB1F4A034F6166B0EC37 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FFCCF3AFD281E1419406EE2D /* NYTimesNoAutoplayExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		07E00F80FEE8078A7A81B7C6 /* NYTimesNoAutoplayHostApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYTimesNoAutoplayHostApp.swift; sourceTree = "<group>"; };
+		BF078481B9B44A156F8A6D99 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		9EEA8BB1D3231248389BF9A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04E9CBD9E6E8E25B96835F49 /* NYTimesNoAutoplayHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NYTimesNoAutoplayHost.entitlements; sourceTree = "<group>"; };
+		172BE2C482B307C2C562F971 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A45E38BA573B8A2964D52018 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		5D421BD0BBBC56D37E93CE2E /* NYTimesNoAutoplayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NYTimesNoAutoplayExtension.entitlements; sourceTree = "<group>"; };
+		998494A74D22FF23D2A0CBAA /* copy-web-extension-resources.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-web-extension-resources.sh"; sourceTree = "<group>"; };
+		1AA4C61265C13DA82233E50E /* NYTimesNoAutoplayHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYTimesNoAutoplayHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		640DDD05409DAC8EB9C53096 /* NYTimesNoAutoplayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NYTimesNoAutoplayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B91D1852C0A2DF27960D3C6A /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		DE7744A376E9E4B09170EC6C /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		372CD32CBB62ACEAA3DEE366 = {
+			isa = PBXGroup;
+			children = (
+				8D5C1EEA72AA5F1DA2B9B2EF /* Shared */,
+				222D88C75249F2326A4A1300 /* Host */,
+				B7961F3A90834C61CDB12FD9 /* Extension */,
+				FAF1729E56F48CB74BA09BD4 /* scripts */,
+				FDBDDE9E5FA406430E4EE039 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8D5C1EEA72AA5F1DA2B9B2EF /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				07E00F80FEE8078A7A81B7C6 /* NYTimesNoAutoplayHostApp.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		222D88C75249F2326A4A1300 /* Host */ = {
+			isa = PBXGroup;
+			children = (
+				172BE2C482B307C2C562F971 /* Assets.xcassets */,
+				A45E38BA573B8A2964D52018 /* AppIcon.icns */,
+				04E9CBD9E6E8E25B96835F49 /* NYTimesNoAutoplayHost.entitlements */,
+			);
+			path = Host;
+			sourceTree = "<group>";
+		};
+		B7961F3A90834C61CDB12FD9 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				BF078481B9B44A156F8A6D99 /* SafariWebExtensionHandler.swift */,
+				9EEA8BB1D3231248389BF9A4 /* Info.plist */,
+				5D421BD0BBBC56D37E93CE2E /* NYTimesNoAutoplayExtension.entitlements */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		FAF1729E56F48CB74BA09BD4 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				998494A74D22FF23D2A0CBAA /* copy-web-extension-resources.sh */,
+			);
+			path = scripts;
+			sourceTree = "<group>";
+		};
+		FDBDDE9E5FA406430E4EE039 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1AA4C61265C13DA82233E50E /* NYTimesNoAutoplayHost.app */,
+				640DDD05409DAC8EB9C53096 /* NYTimesNoAutoplayExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ACAD6076A2A8419A74C0992A /* NYTimesNoAutoplayHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39B87E3DA30A9BA6D3EA607D /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayHost" */;
+			buildPhases = (
+				B74E720E6D169EDD582156A9 /* Sources */,
+				B91D1852C0A2DF27960D3C6A /* Frameworks */,
+				95AEAA76DC19EB7C1994F496 /* Resources */,
+				F5D3DB1F4A034F6166B0EC37 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46A25E7B3D33A2FBA4A9D801 /* PBXTargetDependency */,
+			);
+			name = NYTimesNoAutoplayHost;
+			productName = NYTimesNoAutoplayHost;
+			productReference = 1AA4C61265C13DA82233E50E /* NYTimesNoAutoplayHost.app */;
+			productType = "com.apple.product-type.application";
+		};
+		032D4929E028623728830A90 /* NYTimesNoAutoplayExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A597364480B1B2AE03042794 /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayExtension" */;
+			buildPhases = (
+				DFC1AF7066803FAD78A0EC52 /* Copy web extension resources */,
+				8E3742CC95FD5609AC438417 /* Sources */,
+				DE7744A376E9E4B09170EC6C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NYTimesNoAutoplayExtension;
+			productName = NYTimesNoAutoplayExtension;
+			productReference = 640DDD05409DAC8EB9C53096 /* NYTimesNoAutoplayExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FBD244F05B1ED7416B6D41E7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					ACAD6076A2A8419A74C0992A = {CreatedOnToolsVersion = 15.0; };
+					032D4929E028623728830A90 = {CreatedOnToolsVersion = 15.0; };
+				};
+			};
+			buildConfigurationList = 5740F585E54B5E17115BDB27 /* Build configuration list for PBXProject "NYTimesNoAutoplaySafari" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 372CD32CBB62ACEAA3DEE366;
+			productRefGroup = FDBDDE9E5FA406430E4EE039 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ACAD6076A2A8419A74C0992A /* NYTimesNoAutoplayHost */,
+				032D4929E028623728830A90 /* NYTimesNoAutoplayExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		95AEAA76DC19EB7C1994F496 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4951FB208D8AEB29332BD92 /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DFC1AF7066803FAD78A0EC52 /* Copy web extension resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Copy web extension resources";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$PROJECT_DIR\" && /bin/sh ./scripts/copy-web-extension-resources.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B74E720E6D169EDD582156A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4832C9D51D8B983A98BBEFC4 /* NYTimesNoAutoplayHostApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8E3742CC95FD5609AC438417 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				879A141526AECB22A1441CA7 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		46A25E7B3D33A2FBA4A9D801 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 032D4929E028623728830A90 /* NYTimesNoAutoplayExtension */;
+			targetProxy = B516799D4551D6B734651523 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E3E3135596E9528C762DD949 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F0B6E5604D7F2F68655DF521 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		15596BD57ACE533B77BAB91D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Host/NYTimesNoAutoplayHost.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BF6D003E9EE7F7F33389A24A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Host/NYTimesNoAutoplayHost.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E7734A932583EB3219655D1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/NYTimesNoAutoplayExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Extension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1849D324BED7AA88C03A4095 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/NYTimesNoAutoplayExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Extension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		39B87E3DA30A9BA6D3EA607D /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15596BD57ACE533B77BAB91D /* Debug */,
+				BF6D003E9EE7F7F33389A24A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A597364480B1B2AE03042794 /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7734A932583EB3219655D1E /* Debug */,
+				1849D324BED7AA88C03A4095 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5740F585E54B5E17115BDB27 /* Build configuration list for PBXProject "NYTimesNoAutoplaySafari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E3E3135596E9528C762DD949 /* Debug */,
+				F0B6E5604D7F2F68655DF521 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FBD244F05B1ED7416B6D41E7 /* Project object */;
+}

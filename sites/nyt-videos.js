@@ -148,10 +148,19 @@
     }
   }
 
+  function isUnderBetamaxHost(el) {
+    if (isInsideBetamaxShadow(el)) return true;
+    try {
+      return !!(el.closest && el.closest('nyt-betamax'));
+    } catch (_) {
+      return false;
+    }
+  }
+
   function applyVideo(el) {
     if (!(el instanceof HTMLVideoElement)) return;
     if (el.getAttribute('data-testid') === 'betamax-video') return;
-    if (isInsideBetamaxShadow(el)) return;
+    if (isUnderBetamaxHost(el)) return;
     if (el.getAttribute('data-testid') === 'cinemagraph') return;
     if (el.closest('.vhs-grid-page')) return;
     if (el.closest('section[data-testid="Gallery"]')) return;
