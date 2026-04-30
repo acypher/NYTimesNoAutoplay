@@ -6,8 +6,8 @@
  *   unhides overlay/cover "hide"/"hidden" CSS-module classes.
  * - Cinemagraph promos: data-testid="cinemagraph"; gesture on the video or wrapping
  *   link; blocks attribute-driven autoplay (trusted play).
- * - VHS homepage promos: <video> inside .vhs-grid-page (react-vhs); typically no autoplay
- *   attribute — page calls play(); gated like cinemagraph (card click / controls / replay).
+ * - VHS homepage promos: <video> inside .vhs-grid-page or .react-vhs-container;
+ *   typically no autoplay attribute — page calls play(); gated like cinemagraph.
  *   Rejecting play() leaves the player in a buffering/wait UI; we hide that until gesture
  *   (data-nunus-vhs-awaiting-gesture + injected CSS; cleared on grant / playing).
  * - Gallery carousels: <video> inside section[data-testid="Gallery"] (e.g. live blogs);
@@ -213,7 +213,9 @@
   pointer-events: none !important;
 }
 .vhs-grid-page .react-vhs-player.idle .vhs-buffering-container,
-.vhs-grid-page .react-vhs-player.idle .vhs-buffering-container * {
+.vhs-grid-page .react-vhs-player.idle .vhs-buffering-container *,
+.react-vhs-player.idle .vhs-buffering-container,
+.react-vhs-player.idle .vhs-buffering-container * {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -225,9 +227,9 @@
   injectNunusVhsGridStyles();
 
   function markVhsGridAwaitingGesture(video) {
-    const grid = video?.closest?.('.vhs-grid-page');
+    const grid = video?.closest?.('.vhs-grid-page, .react-vhs-container, .react-vhs-player, .nytd-player-container');
     if (grid) grid.dataset.nunusVhsAwaitingGesture = '1';
-    const player = video?.closest?.('.react-vhs-player');
+    const player = video?.closest?.('.react-vhs-player, .nytd-player-container');
     if (player) {
       try {
         player.classList.add('idle');
@@ -236,7 +238,7 @@
   }
 
   function clearVhsGridAwaitingGesture(video) {
-    const grid = video?.closest?.('.vhs-grid-page');
+    const grid = video?.closest?.('.vhs-grid-page, .react-vhs-container, .react-vhs-player, .nytd-player-container');
     if (grid) delete grid.dataset.nunusVhsAwaitingGesture;
   }
 
@@ -250,7 +252,9 @@
 
   function isVhsGridPageVideoElement(el) {
     try {
-      return el instanceof HTMLVideoElement && !!el.closest('.vhs-grid-page');
+      return el instanceof HTMLVideoElement && !!el.closest(
+        '.vhs-grid-page, .react-vhs-container, .react-vhs-player, .nytd-player-container'
+      );
     } catch (_) {
       return false;
     }
@@ -344,10 +348,22 @@
   function wireBetamaxVideoPause(video) {
     if (!video || video.dataset.nunusBetamaxPauseWired === '1') return;
     video.dataset.nunusBetamaxPauseWired = '1';
+    var lastPlayingTs = 0;
+    video.addEventListener(
+      'playing',
+      function() {
+        lastPlayingTs = Date.now();
+      },
+      true
+    );
     video.addEventListener(
       'pause',
-      e => {
-        if (e.isTrusted) delete video.dataset.nunusBetamaxPlayAllowed;
+      function(e) {
+        if (!e.isTrusted) return;
+        // Carousel / Betamax often pauses right after a short play (one frame/step). Treating
+        // that pause like "user stopped" cleared nunusBetamaxPlayAllowed and blocked the next play().
+        if (Date.now() - lastPlayingTs < 900) return;
+        delete video.dataset.nunusBetamaxPlayAllowed;
       },
       true
     );
@@ -425,12 +441,14 @@
       scanVhsGridVideo(node);
       return;
     }
-    if (node.matches?.('.vhs-grid-page')) {
+    if (node.matches?.('.vhs-grid-page, .react-vhs-container, .react-vhs-player, .nytd-player-container')) {
       node.querySelectorAll('video').forEach(scanVhsGridVideo);
       return;
     }
     if (node.querySelectorAll) {
-      node.querySelectorAll('.vhs-grid-page video').forEach(scanVhsGridVideo);
+      node
+        .querySelectorAll('.vhs-grid-page video, .react-vhs-container video, .react-vhs-player video, .nytd-player-container video')
+        .forEach(scanVhsGridVideo);
     }
   }
 
@@ -724,7 +742,9 @@
         wireVhsGridVideoPause(node);
         return;
       }
-      const grid = node.closest && node.closest('.vhs-grid-page');
+      const grid = node.closest && node.closest(
+        '.vhs-grid-page, .react-vhs-container, .react-vhs-player, .nytd-player-container'
+      );
       if (grid) {
         const vid = grid.querySelector('video');
         if (vid) {
@@ -739,7 +759,9 @@
     if (t && t.nodeType !== Node.ELEMENT_NODE) t = t.parentElement;
     const a = t && t.closest && t.closest('a[href]');
     if (!a) return;
-    const vidWrap = a.querySelector('.vhs-grid-page video, video');
+    const vidWrap = a.querySelector(
+      '.vhs-grid-page video, .react-vhs-container video, .react-vhs-player video, .nytd-player-container video, video'
+    );
     if (vidWrap && isVhsGridPageVideoElement(vidWrap)) {
       vidWrap.dataset.nunusVhsGridPlayAllowed = '1';
       clearVhsGridAwaitingGesture(vidWrap);
@@ -798,7 +820,9 @@
     if (!root) return;
     document.querySelectorAll('nyt-betamax').forEach(scanHost);
     document.querySelectorAll('video[data-testid="cinemagraph"]').forEach(scanCinemagraphVideo);
-    document.querySelectorAll('.vhs-grid-page video').forEach(scanVhsGridVideo);
+    document
+      .querySelectorAll('.vhs-grid-page video, .react-vhs-container video, .react-vhs-player video, .nytd-player-container video')
+      .forEach(scanVhsGridVideo);
     document
       .querySelectorAll('section[data-testid="Gallery"] video')
       .forEach(scanGalleryCarouselVideo);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NYTimesNoAutoplay",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Stop video and carousel autoplay on NYTimes.com.",
   "browser_specific_settings": {
     "gecko": {
@@ -24,7 +24,8 @@
     "https://*.nytimes.com/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
   },
   "action": {
     "default_icon": {
