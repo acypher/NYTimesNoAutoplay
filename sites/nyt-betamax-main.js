@@ -27,7 +27,7 @@
     (typeof h === 'string' && h.endsWith('.nytimes.com'));
   if (!onNyt) return;
 
-  const STORAGE_KEY = 'nytCleanerNoAutoplay';
+  const STORAGE_KEY = 'nytCleanerAutoplayBlock';
   const PREFS_READY_KEY = 'nytCleanerPrefsReady';
 
   function noAutoplayEnabled() {

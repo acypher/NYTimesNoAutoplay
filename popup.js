@@ -1,7 +1,7 @@
 const ext = globalThis.browser ?? globalThis.chrome;
 
 const SETTINGS = {
-  noAutoplay: 'nytCleanerNoAutoplay',
+  noAutoplay: 'nytCleanerAutoplayBlock',
   noTimesAds: 'nytCleanerNoTimesAds'
 };
 

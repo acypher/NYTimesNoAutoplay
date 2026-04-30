@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-# Build ../NYTimesNoAutoplay.xpi from this repo (Firefox / AMO).
+# Build ../NYTimesCleaner.xpi from this repo (Firefox / AMO).
 # Sanity-check: manifest.json at zip root.
 #
 # Optional env:
 #   NYTNA_EXTENSION_ROOT  — repo root (default: parent of this script’s directory)
-#   NYTNA_XPI            — output .xpi path (default: $ROOT/../NYTimesNoAutoplay.xpi)
+#   NYTNA_XPI            — output .xpi path (default: $ROOT/../NYTimesCleaner.xpi)
 #
-# Versioned zip + .xpi together: scripts/newNoAutoplay.sh
+# Versioned zip + .xpi together: scripts/newCleaner.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 ROOT="${NYTNA_EXTENSION_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
-OUT="${NYTNA_XPI:-$ROOT/../NYTimesNoAutoplay.xpi}"
+OUT="${NYTNA_XPI:-$ROOT/../NYTimesCleaner.xpi}"
 
 cd "$ROOT" || {
-  echo "buildNytimesNoAutoplayFirefox: cannot cd to $ROOT" >&2
+  echo "buildNytimesCleanerFirefox: cannot cd to $ROOT" >&2
   exit 1
 }
 
@@ -43,7 +43,7 @@ manifest_at_root() {
 }
 
 if ! manifest_at_root "$OUT"; then
-  echo "buildNytimesNoAutoplayFirefox: sanity check failed (manifest.json not at zip root): $OUT" >&2
+  echo "buildNytimesCleanerFirefox: sanity check failed (manifest.json not at zip root): $OUT" >&2
   exit 1
 fi
 

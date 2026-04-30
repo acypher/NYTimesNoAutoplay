@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct NYTimesNoAutoplayHostApp: App {
+struct NYTimesCleanerHostApp: App {
     var body: some Scene {
         WindowGroup {
             Text(

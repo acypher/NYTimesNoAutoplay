@@ -5,7 +5,7 @@
   "description": "Stop NYTimes autoplay and hide onsite subscription ads.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "nytimesnoautoplay@nunus.extension",
+      "id": "nytimescleaner@nunus.extension",
       "data_collection_permissions": {
         "required": ["none"]
       },

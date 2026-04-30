@@ -14,21 +14,21 @@
   if (!onNyt || !ext?.storage?.local) return;
 
   const SETTINGS = {
-    nytCleanerNoAutoplay: 'nytCleanerNoAutoplay',
+    nytCleanerAutoplayBlock: 'nytCleanerAutoplayBlock',
     nytCleanerNoTimesAds: 'nytCleanerNoTimesAds',
     nytCleanerPrefsReady: 'nytCleanerPrefsReady'
   };
 
   function merged(values) {
     return {
-      nytCleanerNoAutoplay: values.nytCleanerNoAutoplay !== false,
+      nytCleanerAutoplayBlock: values.nytCleanerAutoplayBlock !== false,
       nytCleanerNoTimesAds: values.nytCleanerNoTimesAds !== false
     };
   }
 
   function mirror(values) {
     try {
-      ['nytCleanerNoAutoplay', 'nytCleanerNoTimesAds'].forEach(key => {
+      ['nytCleanerAutoplayBlock', 'nytCleanerNoTimesAds'].forEach(key => {
         const enabled = values[key] !== false;
         sessionStorage.setItem(SETTINGS[key], enabled ? '1' : '0');
       });
@@ -37,14 +37,14 @@
   }
 
   mirror({
-    nytCleanerNoAutoplay: true,
+    nytCleanerAutoplayBlock: true,
     nytCleanerNoTimesAds: true
   });
 
   try {
     ext.storage.local.get(
       {
-        nytCleanerNoAutoplay: true,
+        nytCleanerAutoplayBlock: true,
         nytCleanerNoTimesAds: true
       },
       values => mirror(merged(values))
@@ -53,7 +53,7 @@
     ext.storage.onChanged.addListener((changes, area) => {
       if (area !== 'local') return;
       const next = {
-        nytCleanerNoAutoplay: isSessionEnabled('nytCleanerNoAutoplay'),
+        nytCleanerAutoplayBlock: isSessionEnabled('nytCleanerAutoplayBlock'),
         nytCleanerNoTimesAds: isSessionEnabled('nytCleanerNoTimesAds'),
         nytCleanerPrefsReady: true
       };
@@ -68,7 +68,7 @@
     });
   } catch (_) {
     mirror({
-      nytCleanerNoAutoplay: true,
+      nytCleanerAutoplayBlock: true,
       nytCleanerNoTimesAds: true
     });
   }

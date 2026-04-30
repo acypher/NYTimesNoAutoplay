@@ -7,9 +7,9 @@
 #   or xattrs confuse the store backend while chrome://extensions unpacked is fine).
 # - Copies with COPYFILE_DISABLE=1 to avoid AppleDouble files.
 #
-#   newNoAutoplay() { /path/to/NYTimesNoAutoplay/scripts/newNoAutoplay.sh "$@"; }
+#   newCleaner() { /path/to/NYTimesCleaner/scripts/newCleaner.sh "$@"; }
 #
-# Optional: NYTNA_EXTENSION_ROOT=/other/clone ./scripts/newNoAutoplay.sh
+# Optional: NYTNA_EXTENSION_ROOT=/other/clone ./scripts/newCleaner.sh
 
 set -euo pipefail
 
@@ -18,7 +18,7 @@ ROOT="${NYTNA_EXTENSION_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 PARENT="$(cd "$ROOT/.." && pwd)"
 
 ver="$(python3 -c "import json; print(json.load(open('$ROOT/manifest.json'))['version'])")"
-ZIP="$PARENT/NYTimesNoAutoplay-${ver}.zip"
+ZIP="$PARENT/NYTimesCleaner-${ver}.zip"
 
 rm -f "$ZIP"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/nytna-chromezip.XXXXXX")"
@@ -48,7 +48,7 @@ m.pop("browser_specific_settings", None)
 m.setdefault("minimum_chrome_version", "111")
 (tmp / "manifest.json").write_text(json.dumps(m, indent=2) + "\n", encoding="utf-8")
 
-for name in ("background.js", "sites", "icons"):
+for name in ("background.js", "popup.html", "popup.js", "sites", "icons"):
     src = root / name
     dst = tmp / name
     if src.is_file():
@@ -86,8 +86,8 @@ PY
 
 echo "Wrote $ZIP (Python zipfile; Chrome Web Store manifest)"
 
-echo "Building Firefox .xpi: $PARENT/NYTimesNoAutoplay-${ver}.xpi"
-env NYTNA_EXTENSION_ROOT="$ROOT" NYTNA_XPI="$PARENT/NYTimesNoAutoplay-${ver}.xpi" \
-  "$SCRIPT_DIR/build-nytimesnoautoplay-firefox-xpi.sh"
+echo "Building Firefox .xpi: $PARENT/NYTimesCleaner-${ver}.xpi"
+env NYTNA_EXTENSION_ROOT="$ROOT" NYTNA_XPI="$PARENT/NYTimesCleaner-${ver}.xpi" \
+  "$SCRIPT_DIR/build-nytimescleaner-firefox-xpi.sh"
 
-echo "Wrote $PARENT/NYTimesNoAutoplay-${ver}.xpi"
+echo "Wrote $PARENT/NYTimesCleaner-${ver}.xpi"

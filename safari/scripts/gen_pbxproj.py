@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emit safari/NYTimesNoAutoplaySafari.xcodeproj/project.pbxproj (macOS host + Safari Web Extension only)."""
+"""Emit safari/NYTimesCleanerSafari.xcodeproj/project.pbxproj (macOS host + Safari Web Extension only)."""
 from __future__ import annotations
 
 import hashlib
@@ -7,7 +7,7 @@ import json
 import os
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-PROJ_DIR = os.path.join(ROOT, "NYTimesNoAutoplaySafari.xcodeproj")
+PROJ_DIR = os.path.join(ROOT, "NYTimesCleanerSafari.xcodeproj")
 OUT = os.path.join(PROJ_DIR, "project.pbxproj")
 MANIFEST = os.path.normpath(os.path.join(ROOT, "..", "manifest.json"))
 
@@ -57,9 +57,9 @@ s = f"""// !$*UTF8*$!
 \tobjects = {{
 
 /* Begin PBXBuildFile section */
-\t\t{BF_APP} /* NYTimesNoAutoplayHostApp.swift in Sources */ = {{isa = PBXBuildFile; fileRef = {FR_SWIFT} /* NYTimesNoAutoplayHostApp.swift */; }};
+\t\t{BF_APP} /* NYTimesCleanerHostApp.swift in Sources */ = {{isa = PBXBuildFile; fileRef = {FR_SWIFT} /* NYTimesCleanerHostApp.swift */; }};
 \t\t{BF_HANDLER} /* SafariWebExtensionHandler.swift in Sources */ = {{isa = PBXBuildFile; fileRef = {FR_HANDLER} /* SafariWebExtensionHandler.swift */; }};
-\t\t{BF_EMBED} /* NYTimesNoAutoplayExtension.appex in Embed Foundation Extensions */ = {{isa = PBXBuildFile; fileRef = {PR_EXT_APPEX} /* NYTimesNoAutoplayExtension.appex */; settings = {{ATTRIBUTES = (RemoveHeadersOnCopy, ); }}; }};
+\t\t{BF_EMBED} /* NYTimesCleanerExtension.appex in Embed Foundation Extensions */ = {{isa = PBXBuildFile; fileRef = {PR_EXT_APPEX} /* NYTimesCleanerExtension.appex */; settings = {{ATTRIBUTES = (RemoveHeadersOnCopy, ); }}; }};
 \t\t{BF_APPICNS} /* AppIcon.icns in Resources */ = {{isa = PBXBuildFile; fileRef = {FR_APPICNS} /* AppIcon.icns */; }};
 /* End PBXBuildFile section */
 
@@ -69,7 +69,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tcontainerPortal = {P_ROOT} /* Project object */;
 \t\t\tproxyType = 1;
 \t\t\tremoteGlobalIDString = {T_EXT};
-\t\t\tremoteInfo = NYTimesNoAutoplayExtension;
+\t\t\tremoteInfo = NYTimesCleanerExtension;
 \t\t}};
 /* End PBXContainerItemProxy section */
 
@@ -80,7 +80,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tdstPath = "";
 \t\t\tdstSubfolderSpec = 13;
 \t\t\tfiles = (
-\t\t\t\t{BF_EMBED} /* NYTimesNoAutoplayExtension.appex in Embed Foundation Extensions */,
+\t\t\t\t{BF_EMBED} /* NYTimesCleanerExtension.appex in Embed Foundation Extensions */,
 \t\t\t);
 \t\t\tname = "Embed Foundation Extensions";
 \t\t\trunOnlyForDeploymentPostprocessing = 0;
@@ -88,16 +88,16 @@ s = f"""// !$*UTF8*$!
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-\t\t{FR_SWIFT} /* NYTimesNoAutoplayHostApp.swift */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYTimesNoAutoplayHostApp.swift; sourceTree = "<group>"; }};
+\t\t{FR_SWIFT} /* NYTimesCleanerHostApp.swift */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYTimesCleanerHostApp.swift; sourceTree = "<group>"; }};
 \t\t{FR_HANDLER} /* SafariWebExtensionHandler.swift */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; }};
 \t\t{FR_INFO} /* Info.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; }};
-\t\t{FR_HOST_ENT} /* NYTimesNoAutoplayHost.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NYTimesNoAutoplayHost.entitlements; sourceTree = "<group>"; }};
+\t\t{FR_HOST_ENT} /* NYTimesCleanerHost.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NYTimesCleanerHost.entitlements; sourceTree = "<group>"; }};
 \t\t{FR_ASSETS} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; }};
 \t\t{FR_APPICNS} /* AppIcon.icns */ = {{isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; }};
-\t\t{FR_EXT_ENT} /* NYTimesNoAutoplayExtension.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NYTimesNoAutoplayExtension.entitlements; sourceTree = "<group>"; }};
+\t\t{FR_EXT_ENT} /* NYTimesCleanerExtension.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NYTimesCleanerExtension.entitlements; sourceTree = "<group>"; }};
 \t\t{FR_SCRIPT} /* copy-web-extension-resources.sh */ = {{isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-web-extension-resources.sh"; sourceTree = "<group>"; }};
-\t\t{PR_HOST_APP} /* NYTimesNoAutoplayHost.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYTimesNoAutoplayHost.app; sourceTree = BUILT_PRODUCTS_DIR; }};
-\t\t{PR_EXT_APPEX} /* NYTimesNoAutoplayExtension.appex */ = {{isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NYTimesNoAutoplayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; }};
+\t\t{PR_HOST_APP} /* NYTimesCleanerHost.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYTimesCleanerHost.app; sourceTree = BUILT_PRODUCTS_DIR; }};
+\t\t{PR_EXT_APPEX} /* NYTimesCleanerExtension.appex */ = {{isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NYTimesCleanerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; }};
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +120,7 @@ s = f"""// !$*UTF8*$!
 \t\t{G_SHARED} /* Shared */ = {{
 \t\t\tisa = PBXGroup;
 \t\t\tchildren = (
-\t\t\t\t{FR_SWIFT} /* NYTimesNoAutoplayHostApp.swift */,
+\t\t\t\t{FR_SWIFT} /* NYTimesCleanerHostApp.swift */,
 \t\t\t);
 \t\t\tpath = Shared;
 \t\t\tsourceTree = "<group>";
@@ -130,7 +130,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tchildren = (
 \t\t\t\t{FR_ASSETS} /* Assets.xcassets */,
 \t\t\t\t{FR_APPICNS} /* AppIcon.icns */,
-\t\t\t\t{FR_HOST_ENT} /* NYTimesNoAutoplayHost.entitlements */,
+\t\t\t\t{FR_HOST_ENT} /* NYTimesCleanerHost.entitlements */,
 \t\t\t);
 \t\t\tpath = Host;
 \t\t\tsourceTree = "<group>";
@@ -140,7 +140,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tchildren = (
 \t\t\t\t{FR_HANDLER} /* SafariWebExtensionHandler.swift */,
 \t\t\t\t{FR_INFO} /* Info.plist */,
-\t\t\t\t{FR_EXT_ENT} /* NYTimesNoAutoplayExtension.entitlements */,
+\t\t\t\t{FR_EXT_ENT} /* NYTimesCleanerExtension.entitlements */,
 \t\t\t);
 \t\t\tpath = Extension;
 \t\t\tsourceTree = "<group>";
@@ -156,8 +156,8 @@ s = f"""// !$*UTF8*$!
 \t\t{G_PROD} /* Products */ = {{
 \t\t\tisa = PBXGroup;
 \t\t\tchildren = (
-\t\t\t\t{PR_HOST_APP} /* NYTimesNoAutoplayHost.app */,
-\t\t\t\t{PR_EXT_APPEX} /* NYTimesNoAutoplayExtension.appex */,
+\t\t\t\t{PR_HOST_APP} /* NYTimesCleanerHost.app */,
+\t\t\t\t{PR_EXT_APPEX} /* NYTimesCleanerExtension.appex */,
 \t\t\t);
 \t\t\tname = Products;
 \t\t\tsourceTree = "<group>";
@@ -165,9 +165,9 @@ s = f"""// !$*UTF8*$!
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-\t\t{T_HOST} /* NYTimesNoAutoplayHost */ = {{
+\t\t{T_HOST} /* NYTimesCleanerHost */ = {{
 \t\t\tisa = PBXNativeTarget;
-\t\t\tbuildConfigurationList = {XC_LIST_HOST} /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayHost" */;
+\t\t\tbuildConfigurationList = {XC_LIST_HOST} /* Build configuration list for PBXNativeTarget "NYTimesCleanerHost" */;
 \t\t\tbuildPhases = (
 \t\t\t\t{SRC_HOST} /* Sources */,
 \t\t\t\t{FW_HOST} /* Frameworks */,
@@ -179,14 +179,14 @@ s = f"""// !$*UTF8*$!
 \t\t\tdependencies = (
 \t\t\t\t{TD} /* PBXTargetDependency */,
 \t\t\t);
-\t\t\tname = NYTimesNoAutoplayHost;
-\t\t\tproductName = NYTimesNoAutoplayHost;
-\t\t\tproductReference = {PR_HOST_APP} /* NYTimesNoAutoplayHost.app */;
+\t\t\tname = NYTimesCleanerHost;
+\t\t\tproductName = NYTimesCleanerHost;
+\t\t\tproductReference = {PR_HOST_APP} /* NYTimesCleanerHost.app */;
 \t\t\tproductType = "com.apple.product-type.application";
 \t\t}};
-\t\t{T_EXT} /* NYTimesNoAutoplayExtension */ = {{
+\t\t{T_EXT} /* NYTimesCleanerExtension */ = {{
 \t\t\tisa = PBXNativeTarget;
-\t\t\tbuildConfigurationList = {XC_LIST_EXT} /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayExtension" */;
+\t\t\tbuildConfigurationList = {XC_LIST_EXT} /* Build configuration list for PBXNativeTarget "NYTimesCleanerExtension" */;
 \t\t\tbuildPhases = (
 \t\t\t\t{SH_EXT} /* Copy web extension resources */,
 \t\t\t\t{SRC_EXT} /* Sources */,
@@ -196,9 +196,9 @@ s = f"""// !$*UTF8*$!
 \t\t\t);
 \t\t\tdependencies = (
 \t\t\t);
-\t\t\tname = NYTimesNoAutoplayExtension;
-\t\t\tproductName = NYTimesNoAutoplayExtension;
-\t\t\tproductReference = {PR_EXT_APPEX} /* NYTimesNoAutoplayExtension.appex */;
+\t\t\tname = NYTimesCleanerExtension;
+\t\t\tproductName = NYTimesCleanerExtension;
+\t\t\tproductReference = {PR_EXT_APPEX} /* NYTimesCleanerExtension.appex */;
 \t\t\tproductType = "com.apple.product-type.app-extension";
 \t\t}};
 /* End PBXNativeTarget section */
@@ -215,7 +215,7 @@ s = f"""// !$*UTF8*$!
 \t\t\t\t\t{T_EXT} = {{CreatedOnToolsVersion = 15.0; }};
 \t\t\t\t}};
 \t\t\t}};
-\t\t\tbuildConfigurationList = {XC_LIST_PROJ} /* Build configuration list for PBXProject "NYTimesNoAutoplaySafari" */;
+\t\t\tbuildConfigurationList = {XC_LIST_PROJ} /* Build configuration list for PBXProject "NYTimesCleanerSafari" */;
 \t\t\tcompatibilityVersion = "Xcode 14.0";
 \t\t\tdevelopmentRegion = en;
 \t\t\thasScannedForEncodings = 0;
@@ -228,8 +228,8 @@ s = f"""// !$*UTF8*$!
 \t\t\tprojectDirPath = "";
 \t\t\tprojectRoot = "";
 \t\t\ttargets = (
-\t\t\t\t{T_HOST} /* NYTimesNoAutoplayHost */,
-\t\t\t\t{T_EXT} /* NYTimesNoAutoplayExtension */,
+\t\t\t\t{T_HOST} /* NYTimesCleanerHost */,
+\t\t\t\t{T_EXT} /* NYTimesCleanerExtension */,
 \t\t\t);
 \t\t}};
 /* End PBXProject section */
@@ -264,7 +264,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tisa = PBXSourcesBuildPhase;
 \t\t\tbuildActionMask = 2147483647;
 \t\t\tfiles = (
-\t\t\t\t{BF_APP} /* NYTimesNoAutoplayHostApp.swift in Sources */,
+\t\t\t\t{BF_APP} /* NYTimesCleanerHostApp.swift in Sources */,
 \t\t\t);
 \t\t\trunOnlyForDeploymentPostprocessing = 0;
 \t\t}};
@@ -281,7 +281,7 @@ s = f"""// !$*UTF8*$!
 /* Begin PBXTargetDependency section */
 \t\t{TD} /* PBXTargetDependency */ = {{
 \t\t\tisa = PBXTargetDependency;
-\t\t\ttarget = {T_EXT} /* NYTimesNoAutoplayExtension */;
+\t\t\ttarget = {T_EXT} /* NYTimesCleanerExtension */;
 \t\t\ttargetProxy = {PX} /* PBXContainerItemProxy */;
 \t\t}};
 /* End PBXTargetDependency section */
@@ -321,13 +321,13 @@ s = f"""// !$*UTF8*$!
 \t\t\tisa = XCBuildConfiguration;
 \t\t\tbuildSettings = {{
 \t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-\t\t\t\tCODE_SIGN_ENTITLEMENTS = Host/NYTimesNoAutoplayHost.entitlements;
+\t\t\t\tCODE_SIGN_ENTITLEMENTS = Host/NYTimesCleanerHost.entitlements;
 \t\t\t\tCODE_SIGN_STYLE = Automatic;
 \t\t\t\tCOMBINE_HIDPI_IMAGES = YES;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tENABLE_PREVIEWS = YES;
 \t\t\t\tGENERATE_INFOPLIST_FILE = YES;
-\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesCleaner;
 \t\t\t\tINFOPLIST_KEY_NSHumanReadableCopyright = "";
 \t\t\t\tLD_RUNPATH_SEARCH_PATHS = (
 \t\t\t\t\t"$(inherited)",
@@ -335,7 +335,7 @@ s = f"""// !$*UTF8*$!
 \t\t\t\t);
 \t\t\t\tMACOSX_DEPLOYMENT_TARGET = 14.0;
 \t\t\t\tMARKETING_VERSION = {MV};
-\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesCleanerHost;
 \t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";
 \t\t\t\tSDKROOT = macosx;
 \t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;
@@ -347,13 +347,13 @@ s = f"""// !$*UTF8*$!
 \t\t\tisa = XCBuildConfiguration;
 \t\t\tbuildSettings = {{
 \t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-\t\t\t\tCODE_SIGN_ENTITLEMENTS = Host/NYTimesNoAutoplayHost.entitlements;
+\t\t\t\tCODE_SIGN_ENTITLEMENTS = Host/NYTimesCleanerHost.entitlements;
 \t\t\t\tCODE_SIGN_STYLE = Automatic;
 \t\t\t\tCOMBINE_HIDPI_IMAGES = YES;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tENABLE_PREVIEWS = YES;
 \t\t\t\tGENERATE_INFOPLIST_FILE = YES;
-\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesCleaner;
 \t\t\t\tINFOPLIST_KEY_NSHumanReadableCopyright = "";
 \t\t\t\tLD_RUNPATH_SEARCH_PATHS = (
 \t\t\t\t\t"$(inherited)",
@@ -361,7 +361,7 @@ s = f"""// !$*UTF8*$!
 \t\t\t\t);
 \t\t\t\tMACOSX_DEPLOYMENT_TARGET = 14.0;
 \t\t\t\tMARKETING_VERSION = {MV};
-\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesCleanerHost;
 \t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";
 \t\t\t\tSDKROOT = macosx;
 \t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;
@@ -372,13 +372,13 @@ s = f"""// !$*UTF8*$!
 \t\t{DBG_EXT} /* Debug */ = {{
 \t\t\tisa = XCBuildConfiguration;
 \t\t\tbuildSettings = {{
-\t\t\t\tCODE_SIGN_ENTITLEMENTS = Extension/NYTimesNoAutoplayExtension.entitlements;
+\t\t\t\tCODE_SIGN_ENTITLEMENTS = Extension/NYTimesCleanerExtension.entitlements;
 \t\t\t\tCODE_SIGN_STYLE = Automatic;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tENABLE_USER_SCRIPT_SANDBOXING = NO;
 \t\t\t\tGENERATE_INFOPLIST_FILE = NO;
 \t\t\t\tINFOPLIST_FILE = Extension/Info.plist;
-\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesCleaner;
 \t\t\t\tINFOPLIST_KEY_NSHumanReadableCopyright = "";
 \t\t\t\tLD_RUNPATH_SEARCH_PATHS = (
 \t\t\t\t\t"$(inherited)",
@@ -387,7 +387,7 @@ s = f"""// !$*UTF8*$!
 \t\t\t\t);
 \t\t\t\tMACOSX_DEPLOYMENT_TARGET = 14.0;
 \t\t\t\tMARKETING_VERSION = {MV};
-\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost.Extension;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesCleanerHost.Extension;
 \t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";
 \t\t\t\tSDKROOT = macosx;
 \t\t\t\tSKIP_INSTALL = YES;
@@ -399,13 +399,13 @@ s = f"""// !$*UTF8*$!
 \t\t{REL_EXT} /* Release */ = {{
 \t\t\tisa = XCBuildConfiguration;
 \t\t\tbuildSettings = {{
-\t\t\t\tCODE_SIGN_ENTITLEMENTS = Extension/NYTimesNoAutoplayExtension.entitlements;
+\t\t\t\tCODE_SIGN_ENTITLEMENTS = Extension/NYTimesCleanerExtension.entitlements;
 \t\t\t\tCODE_SIGN_STYLE = Automatic;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tENABLE_USER_SCRIPT_SANDBOXING = NO;
 \t\t\t\tGENERATE_INFOPLIST_FILE = NO;
 \t\t\t\tINFOPLIST_FILE = Extension/Info.plist;
-\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesNoAutoplay;
+\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = NYTimesCleaner;
 \t\t\t\tINFOPLIST_KEY_NSHumanReadableCopyright = "";
 \t\t\t\tLD_RUNPATH_SEARCH_PATHS = (
 \t\t\t\t\t"$(inherited)",
@@ -414,7 +414,7 @@ s = f"""// !$*UTF8*$!
 \t\t\t\t);
 \t\t\t\tMACOSX_DEPLOYMENT_TARGET = 14.0;
 \t\t\t\tMARKETING_VERSION = {MV};
-\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesNoAutoplayHost.Extension;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.nunus.NYTimesCleanerHost.Extension;
 \t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";
 \t\t\t\tSDKROOT = macosx;
 \t\t\t\tSKIP_INSTALL = YES;
@@ -426,7 +426,7 @@ s = f"""// !$*UTF8*$!
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-\t\t{XC_LIST_HOST} /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayHost" */ = {{
+\t\t{XC_LIST_HOST} /* Build configuration list for PBXNativeTarget "NYTimesCleanerHost" */ = {{
 \t\t\tisa = XCConfigurationList;
 \t\t\tbuildConfigurations = (
 \t\t\t\t{DBG_HOST} /* Debug */,
@@ -435,7 +435,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tdefaultConfigurationIsVisible = 0;
 \t\t\tdefaultConfigurationName = Release;
 \t\t}};
-\t\t{XC_LIST_EXT} /* Build configuration list for PBXNativeTarget "NYTimesNoAutoplayExtension" */ = {{
+\t\t{XC_LIST_EXT} /* Build configuration list for PBXNativeTarget "NYTimesCleanerExtension" */ = {{
 \t\t\tisa = XCConfigurationList;
 \t\t\tbuildConfigurations = (
 \t\t\t\t{DBG_EXT} /* Debug */,
@@ -444,7 +444,7 @@ s = f"""// !$*UTF8*$!
 \t\t\tdefaultConfigurationIsVisible = 0;
 \t\t\tdefaultConfigurationName = Release;
 \t\t}};
-\t\t{XC_LIST_PROJ} /* Build configuration list for PBXProject "NYTimesNoAutoplaySafari" */ = {{
+\t\t{XC_LIST_PROJ} /* Build configuration list for PBXProject "NYTimesCleanerSafari" */ = {{
 \t\t\tisa = XCConfigurationList;
 \t\t\tbuildConfigurations = (
 \t\t\t\t{DBG_PROJ} /* Debug */,

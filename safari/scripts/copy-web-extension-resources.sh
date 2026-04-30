@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copy shared web-extension assets from the repo root into the built .appex Resources.
 # Xcode: Run Script phase on the Safari Web Extension target, before Copy Bundle Resources.
-# Optional: export NYTNA_WEBROOT="/absolute/path/to/NYTimesNoAutoplay" if the .xcodeproj is not under safari/.
+# Optional: export NYTNA_WEBROOT="/absolute/path/to/NYTimesCleaner" if the .xcodeproj is not under safari/.
 set -eu
 WEBROOT="${NYTNA_WEBROOT:-${PROJECT_DIR}/..}"
 WRAPPER="${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}"

@@ -8,7 +8,7 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
         let message = item?.userInfo?[SFExtensionMessageKey]
         os_log(
             .default,
-            "NYTimesNoAutoplay Safari extension message: %{public}@",
+            "NYTimesCleaner Safari extension message: %{public}@",
             String(describing: message)
         )
         let response = NSExtensionItem()
