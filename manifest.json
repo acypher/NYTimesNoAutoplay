@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NYTimesNoAutoplay",
-  "version": "1.1.5",
-  "description": "Stop video and carousel autoplay on NYTimes.com.",
+  "name": "NYTimes Cleaner",
+  "version": "1.2.0",
+  "description": "Stop NYTimes autoplay and hide onsite subscription ads.",
   "browser_specific_settings": {
     "gecko": {
       "id": "nytimesnoautoplay@nunus.extension",
@@ -19,6 +19,7 @@
     "96": "icons/icon96.png",
     "128": "icons/icon128.png"
   },
+  "permissions": ["storage"],
   "host_permissions": [
     "https://nytimes.com/*",
     "https://*.nytimes.com/*"
@@ -35,9 +36,18 @@
       "96": "icons/icon96.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "NYTimes NoAutoplay"
+    "default_popup": "popup.html",
+    "default_title": "NYTimes Cleaner"
   },
   "content_scripts": [
+    {
+      "matches": [
+        "https://nytimes.com/*",
+        "https://*.nytimes.com/*"
+      ],
+      "js": ["sites/prefs.js"],
+      "run_at": "document_start"
+    },
     {
       "matches": [
         "https://nytimes.com/*",
@@ -53,6 +63,14 @@
         "https://*.nytimes.com/*"
       ],
       "js": ["sites/nyt-videos.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://nytimes.com/*",
+        "https://*.nytimes.com/*"
+      ],
+      "js": ["sites/nyt-ads.js"],
       "run_at": "document_start"
     }
   ]

@@ -1,10 +1,10 @@
-# Privacy policy — NYTimes NoAutoplay
+# Privacy policy - NYTimes Cleaner
 
 **Last updated:** April 2026
 
 ## What this extension does
 
-NYTimes NoAutoplay runs only on **nytimes.com** and **\*.nytimes.com** pages. It changes how videos and some carousels behave in your browser (for example, to reduce autoplay). It operates **entirely on your device** on those sites.
+NYTimes Cleaner runs only on **nytimes.com** and **\*.nytimes.com** pages. It changes how videos, carousels, and onsite subscription messages behave in your browser. It operates **entirely on your device** on those sites.
 
 ## Data we collect
 

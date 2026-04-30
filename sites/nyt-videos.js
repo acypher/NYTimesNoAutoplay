@@ -2,9 +2,10 @@
  * NYTimes (isolated world): VHS + generic HTML5 video + iframe embed autoplay tweaks.
  * Betamax / cinemagraph / .vhs-grid-page / Gallery / story-wrapper[data-tpl=lb]: MAIN betamax (play()).
  *
- * Always active when extension is installed. document_start; MutationObserver singleton.
+ * Defaults on; the popup can disable it. document_start; MutationObserver singleton.
  */
 (function() {
+  const ext = globalThis.browser ?? globalThis.chrome;
   const h = window.location.hostname;
   const onNyt =
     h === 'www.nytimes.com' ||
@@ -12,6 +13,7 @@
     (typeof h === 'string' && h.endsWith('.nytimes.com'));
   if (!onNyt) return;
 
+  const STORAGE_KEY = 'nytCleanerNoAutoplay';
   const ATTR_WATCH = [
     'autoplay',
     'loop',
@@ -22,6 +24,15 @@
   ];
 
   const ns = (window.__nunusNytVideos = window.__nunusNytVideos || {});
+
+  function isEnabledFromSession() {
+    try {
+      const value = sessionStorage.getItem(STORAGE_KEY);
+      if (value === '0') return false;
+      if (value === '1') return true;
+    } catch (_) {}
+    return true;
+  }
 
   function walkShadow(root, visit) {
     if (!root || !root.querySelectorAll) return;
@@ -158,6 +169,7 @@
   }
 
   function applyVideo(el) {
+    if (ns.enabled === false) return;
     if (!(el instanceof HTMLVideoElement)) return;
     if (el.getAttribute('data-testid') === 'betamax-video') return;
     if (isUnderBetamaxHost(el)) return;
@@ -199,12 +211,15 @@
   }
 
   function scanSubtree(node) {
+    if (ns.enabled === false) return;
     if (!node || node.nodeType !== Node.ELEMENT_NODE) return;
     forEachVideo(node, applyVideo);
     forEachIframe(node);
   }
 
   function boot() {
+    ns.enabled = isEnabledFromSession();
+    if (!ns.enabled) return;
     const root = document.documentElement;
     if (!root) return;
     scanSubtree(root);
@@ -232,4 +247,22 @@
       if (r) scanSubtree(r);
     });
   }
+
+  try {
+    ext?.storage?.local?.get({ [STORAGE_KEY]: true }, values => {
+      ns.enabled = values[STORAGE_KEY] !== false;
+      try {
+        sessionStorage.setItem(STORAGE_KEY, ns.enabled ? '1' : '0');
+      } catch (_) {}
+      if (ns.enabled) boot();
+    });
+    ext?.storage?.onChanged?.addListener((changes, area) => {
+      if (area !== 'local' || !changes[STORAGE_KEY]) return;
+      ns.enabled = changes[STORAGE_KEY].newValue !== false;
+      try {
+        sessionStorage.setItem(STORAGE_KEY, ns.enabled ? '1' : '0');
+      } catch (_) {}
+      if (ns.enabled) boot();
+    });
+  } catch (_) {}
 })();

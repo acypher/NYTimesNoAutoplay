@@ -17,7 +17,7 @@
  * - Gallery image carousels (same section, ol.carousel-ol): periodic setInterval ticks that
  *   advance slides are no-op'd while that DOM is present (typical 3-12s delays).
  *
- * Always active when extension is installed (no preference toggle).
+ * Defaults on; the popup can disable it.
  */
 (function() {
   const h = window.location.hostname;
@@ -26,6 +26,44 @@
     h === 'nytimes.com' ||
     (typeof h === 'string' && h.endsWith('.nytimes.com'));
   if (!onNyt) return;
+
+  const STORAGE_KEY = 'nytCleanerNoAutoplay';
+  const PREFS_READY_KEY = 'nytCleanerPrefsReady';
+
+  function noAutoplayEnabled() {
+    try {
+      if (sessionStorage.getItem(PREFS_READY_KEY) !== '1') return null;
+      const value = sessionStorage.getItem(STORAGE_KEY);
+      if (value === '0') return false;
+      if (value === '1') return true;
+    } catch (_) {}
+    return true;
+  }
+
+  const enabled = noAutoplayEnabled();
+  if (enabled === false) return;
+  if (enabled === null) {
+    if (window.__nytCleanerMainWaitingForPrefs) return;
+    window.__nytCleanerMainWaitingForPrefs = true;
+    const startedAt = Date.now();
+    const waitForPrefs = () => {
+      const nextEnabled = noAutoplayEnabled();
+      if (nextEnabled === false) return;
+      if (nextEnabled === true || Date.now() - startedAt > 1000) {
+        installAutoplayBlocker();
+        return;
+      }
+      requestAnimationFrame(waitForPrefs);
+    };
+    requestAnimationFrame(waitForPrefs);
+    return;
+  }
+
+  installAutoplayBlocker();
+
+  function installAutoplayBlocker() {
+    if (window.__nytCleanerMainAutoplayLoaded) return;
+    window.__nytCleanerMainAutoplayLoaded = true;
 
   function installGalleryImageCarouselIntervalBlock() {
     if (window.__nunusGalleryCarouselIntervalHook) return;
@@ -848,5 +886,6 @@
   }
   if (typeof customElements !== 'undefined' && customElements != null && typeof customElements.whenDefined === 'function') {
     customElements.whenDefined('nyt-betamax').then(boot);
+  }
   }
 })();
