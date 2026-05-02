@@ -211,21 +211,11 @@
   var __nunusOrigPlay = HTMLVideoElement.prototype.play;
   HTMLVideoElement.prototype.play = function nunusEarlyPlayGuard() {
     try {
-      var inBmx = false;
-      var root = this.getRootNode();
-      while (root instanceof ShadowRoot) {
-        if (root.host && root.host.tagName === 'NYT-BETAMAX') {
-          inBmx = true;
-          break;
-        }
-        root = root.host.getRootNode();
+      var betamaxHost = betamaxHostFromVideo(this);
+      if (betamaxHost && betamaxHost.dataset.nunusBetamaxPlayAllowed === '1') {
+        this.dataset.nunusBetamaxPlayAllowed = '1';
       }
-      if (!inBmx) {
-        try {
-          inBmx = !!(this.closest && this.closest('nyt-betamax'));
-        } catch (_) {}
-      }
-      if (inBmx && this.dataset.nunusBetamaxPlayAllowed !== '1') {
+      if (betamaxHost && this.dataset.nunusBetamaxPlayAllowed !== '1') {
         return Promise.reject(
           new DOMException('Nunus blocked autoplay', 'NotAllowedError')
         );
@@ -402,6 +392,8 @@
         // that pause like "user stopped" cleared nunusBetamaxPlayAllowed and blocked the next play().
         if (Date.now() - lastPlayingTs < 900) return;
         delete video.dataset.nunusBetamaxPlayAllowed;
+        const host = betamaxHostFromVideo(video);
+        if (host) delete host.dataset.nunusBetamaxPlayAllowed;
       },
       true
     );
@@ -609,11 +601,26 @@
     return findBetamaxVideoInLightDom(host);
   }
 
+  function allowBetamaxHostPlayback(host, vid) {
+    if (!host) return;
+    host.dataset.nunusBetamaxPlayAllowed = '1';
+    const video = vid || findBetamaxVideoForHost(host);
+    if (video) {
+      video.dataset.nunusBetamaxPlayAllowed = '1';
+      wireBetamaxVideoPause(video);
+    }
+  }
+
   function applyBetamaxVideoBlock(host, vid) {
+    if (host?.dataset?.nunusBetamaxPlayAllowed === '1') {
+      vid.dataset.nunusBetamaxPlayAllowed = '1';
+    }
     stripBetamaxAutoplay(vid);
-    try {
-      vid.pause();
-    } catch (_) {}
+    if (vid.dataset.nunusBetamaxPlayAllowed !== '1') {
+      try {
+        vid.pause();
+      } catch (_) {}
+    }
     wireBetamaxVideoPause(vid);
     wireBetamaxHostUnhideObserver(host);
   }
@@ -673,7 +680,11 @@
   }
 
   HTMLVideoElement.prototype.play = function play() {
-    if (isBetamaxVideoElement(this) && betamaxHostFromVideo(this)) {
+    const betamaxHost = betamaxHostFromVideo(this);
+    if (betamaxHost) {
+      if (betamaxHost.dataset.nunusBetamaxPlayAllowed === '1') {
+        this.dataset.nunusBetamaxPlayAllowed = '1';
+      }
       if (this.dataset.nunusBetamaxPlayAllowed !== '1') {
         return Promise.reject(
           new DOMException('Nunus blocked autoplay', 'NotAllowedError')
@@ -723,14 +734,6 @@
       }
       return __nunusOrigPlay.apply(this, arguments);
     }
-    if (betamaxHostFromVideo(this)) {
-      if (this.dataset.nunusBetamaxPlayAllowed !== '1') {
-        return Promise.reject(
-          new DOMException('Nunus blocked autoplay', 'NotAllowedError')
-        );
-      }
-      return __nunusOrigPlay.apply(this, arguments);
-    }
     return __nunusOrigPlay.apply(this, arguments);
   };
 
@@ -740,11 +743,8 @@
     document.querySelectorAll('nyt-betamax').forEach(host => {
       if (!path.includes(host)) return;
       const vid = findBetamaxVideoForHost(host);
-      if (vid) {
-        vid.dataset.nunusBetamaxPlayAllowed = '1';
-        wireBetamaxHostUnhideObserver(host);
-        wireBetamaxVideoPause(vid);
-      }
+      allowBetamaxHostPlayback(host, vid);
+      wireBetamaxHostUnhideObserver(host);
     });
   }
 
