@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NYTimes Cleaner",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Stop NYTimes autoplay and hide onsite subscription ads.",
   "browser_specific_settings": {
     "gecko": {
