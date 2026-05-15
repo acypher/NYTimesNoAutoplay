@@ -65,149 +65,6 @@
     if (window.__nytCleanerMainAutoplayLoaded) return;
     window.__nytCleanerMainAutoplayLoaded = true;
 
-  function installGalleryImageCarouselIntervalBlock() {
-    if (window.__nunusGalleryCarouselIntervalHook) return;
-    window.__nunusGalleryCarouselIntervalHook = true;
-
-    const DELAY_MIN_MS = 2800;
-    const DELAY_MAX_MS = 13000;
-
-    function shouldBlockGalleryTick() {
-      try {
-        return !!document.querySelector(
-          'section[data-testid="Gallery"] ol.carousel-ol'
-        );
-      } catch (_) {
-        return false;
-      }
-    }
-
-    const origSetInterval = window.setInterval;
-    window.setInterval = function nunusGalleryGuardedSetInterval(fn, delay) {
-      const tail = Array.prototype.slice.call(arguments, 2);
-      if (
-        typeof fn === 'function' &&
-        typeof delay === 'number' &&
-        delay >= DELAY_MIN_MS &&
-        delay <= DELAY_MAX_MS
-      ) {
-        const wrapped = function nunusGalleryNoAutoTick(...cbArgs) {
-          if (shouldBlockGalleryTick()) return;
-          return fn.apply(this, cbArgs);
-        };
-        return origSetInterval.apply(this, [wrapped, delay].concat(tail));
-      }
-      return origSetInterval.apply(this, arguments);
-    };
-
-    const origSetTimeout = window.setTimeout;
-    window.setTimeout = function nunusGalleryGuardedSetTimeout(fn, delay) {
-      const tail = Array.prototype.slice.call(arguments, 2);
-      if (
-        typeof fn === 'function' &&
-        typeof delay === 'number' &&
-        delay >= DELAY_MIN_MS &&
-        delay <= DELAY_MAX_MS
-      ) {
-        const wrapped = function nunusGalleryNoAutoTimeout(...cbArgs) {
-          if (shouldBlockGalleryTick()) return;
-          return fn.apply(this, cbArgs);
-        };
-        return origSetTimeout.apply(this, [wrapped, delay].concat(tail));
-      }
-      return origSetTimeout.apply(this, arguments);
-    };
-  }
-  installGalleryImageCarouselIntervalBlock();
-
-  function installGalleryCarouselClassBlock() {
-    if (window.__nunusGalleryCarouselClassBlock) return;
-    window.__nunusGalleryCarouselClassBlock = true;
-
-    var trackedCarousels = new WeakSet();
-    var userActive = new WeakMap();
-    var gestureTimers = new WeakMap();
-    var GESTURE_LINGER_MS = 2000;
-    var reverting = new WeakSet();
-
-    function isUserActive(carousel) {
-      return userActive.get(carousel) === true;
-    }
-
-    function wireGestureTracking(carousel) {
-      if (userActive.has(carousel)) return;
-      userActive.set(carousel, false);
-      carousel.addEventListener('pointerdown', function() {
-        userActive.set(carousel, true);
-        var t = gestureTimers.get(carousel);
-        if (t) clearTimeout(t);
-      }, true);
-      function onEnd() {
-        var t = gestureTimers.get(carousel);
-        if (t) clearTimeout(t);
-        gestureTimers.set(carousel, setTimeout(function() {
-          userActive.set(carousel, false);
-        }, GESTURE_LINGER_MS));
-      }
-      carousel.addEventListener('pointerup', onEnd, true);
-      carousel.addEventListener('pointercancel', onEnd, true);
-    }
-
-    function observeCarousel(ol) {
-      if (trackedCarousels.has(ol)) return;
-      trackedCarousels.add(ol);
-      wireGestureTracking(ol);
-
-      var mo = new MutationObserver(function(mutations) {
-        if (isUserActive(ol)) return;
-        for (var i = 0; i < mutations.length; i++) {
-          var m = mutations[i];
-          if (m.type !== 'attributes' || m.attributeName !== 'class') continue;
-          var li = m.target;
-          if (reverting.has(li)) continue;
-          var oldVal = m.oldValue || '';
-          var newVal = li.getAttribute('class') || '';
-          if (newVal === oldVal) continue;
-          reverting.add(li);
-          try {
-            li.setAttribute('class', oldVal);
-          } catch (_) {}
-          reverting.delete(li);
-        }
-      });
-      mo.observe(ol, {
-        attributes: true,
-        attributeFilter: ['class'],
-        attributeOldValue: true,
-        subtree: true
-      });
-    }
-
-    function scanForCarousels() {
-      try {
-        var ols = document.querySelectorAll(
-          'section[data-testid="Gallery"] ol.carousel-ol'
-        );
-        for (var i = 0; i < ols.length; i++) observeCarousel(ols[i]);
-      } catch (_) {}
-    }
-
-    function onDocReady() {
-      scanForCarousels();
-      try {
-        var docMo = new MutationObserver(function() { scanForCarousels(); });
-        docMo.observe(document.documentElement, { childList: true, subtree: true });
-      } catch (_) {}
-    }
-
-    if (document.documentElement) {
-      onDocReady();
-    } else {
-      document.addEventListener('DOMContentLoaded', onDocReady, { once: true });
-    }
-  }
-  installGalleryCarouselClassBlock();
-
   var __nunusOrigPlay = HTMLVideoElement.prototype.play;
   HTMLVideoElement.prototype.play = function nunusEarlyPlayGuard() {
     try {
@@ -739,13 +596,16 @@
 
   function grantBetamaxGestures(e) {
     if (!e.isTrusted) return;
-    const path = e.composedPath();
-    document.querySelectorAll('nyt-betamax').forEach(host => {
-      if (!path.includes(host)) return;
-      const vid = findBetamaxVideoForHost(host);
-      allowBetamaxHostPlayback(host, vid);
-      wireBetamaxHostUnhideObserver(host);
-    });
+    // Walk composedPath() directly so nyt-betamax elements inside a component's
+    // shadow root (e.g. the /video/watch feed player) are found.
+    // document.querySelectorAll() does not pierce shadow DOMs.
+    for (const node of e.composedPath()) {
+      if (node instanceof Element && node.tagName === 'NYT-BETAMAX') {
+        const vid = findBetamaxVideoForHost(node);
+        allowBetamaxHostPlayback(node, vid);
+        wireBetamaxHostUnhideObserver(node);
+      }
+    }
   }
 
   function grantCinemagraphGestures(e) {
